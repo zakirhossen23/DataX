@@ -5,13 +5,13 @@ export default async function handler(req, res) {
     await FixCors.default(res);
   } catch (error) {}
 
-  let useContract = await import("../../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+  let useContract = await import("../../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
 
-	let trial_id = await ReadContractByQuery(api, signerAddress, getQuery(contract,"GetOngoingTrial"), [Number(req.query.userid)]);
+	let trial_id = await ReadContract(api, signerAddress, ("GetOngoingTrial"), [Number(req.query.userid)]);
   if (trial_id !== "False") {
     
-    let trial_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_trialMap"), [Number(trial_id)]);
+    let trial_element = await ReadContract(api, signerAddress, ("_trialMap"), [Number(trial_id)]);
     var newTrial = {
       id: Number(trial_element.trialId),
       title: trial_element.title,
@@ -21,11 +21,11 @@ export default async function handler(req, res) {
       audience: Number(trial_element.audience),
       budget: Number(trial_element.budget)
     };
-    let all_surveys = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getAllSurveysIDByTrial"), [Number(trial_id)]);
+    let all_surveys = await ReadContract(api, signerAddress, ("getAllSurveysIDByTrial"), [Number(trial_id)]);
 
     let all_trail_surveys = [];
     for (let i = 0; i < all_surveys.length; i++) {
-      let survey_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_surveyMap"), [Number(all_surveys[i])]);
+      let survey_element = await ReadContract(api, signerAddress, ("_surveyMap"), [Number(all_surveys[i])]);
 
       var new_survey = {
         id: Number(survey_element.surveyId),
@@ -41,11 +41,11 @@ export default async function handler(req, res) {
       all_trail_surveys.push(new_survey);
     }
 
-    let all_completed_surveys = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getAllCompletedSurveysIDByUser"), [Number(req.query.userid)]);
+    let all_completed_surveys = await ReadContract(api, signerAddress, ("getAllCompletedSurveysIDByUser"), [Number(req.query.userid)]);
     let all_trail_completed_surveys = [];
 
     for (let i = 0; i < all_completed_surveys.length; i++) {
-      let completed_survey_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_completedsurveyMap"), [Number(all_completed_surveys[i])]);
+      let completed_survey_element = await ReadContract(api, signerAddress, ("_completedsurveyMap"), [Number(all_completed_surveys[i])]);
       var new_completed_survey = {
         id: Number(completed_survey_element.completedSurveyId),
         trial_id: Number(completed_survey_element.trialId),

@@ -5,8 +5,8 @@ export default async function handler(req, res) {
 		await FixCors.default(res);
 	} catch (error) {}
 
-	let useContract = await import("../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+	let useContract = await import("../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
 
 	if (req.method !== "POST") {
 		res.status(405).json({status: 405, error: "Method must have POST request"});

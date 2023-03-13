@@ -7,8 +7,8 @@ export default async function handler(req, res) {
 
 
 
-  let useContract = await import("../../../../../contract/useContract.ts");
-  const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+  let useContract = await import("../../../../../contract/useContract.js");
+  const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
     
   if (req.method !== 'POST') {
     res.status(405).json({ status: 405, error: "Method must have POST request" })
@@ -17,9 +17,9 @@ export default async function handler(req, res) {
 
   const { surveyid, userid, date, trialid } = req.body;
 
-	let survey_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_surveyMap"), [Number(surveyid)]);
+	let survey_element = await ReadContract(api, signerAddress, ("_surveyMap"), [Number(surveyid)]);
   
-	let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(surveyid)]);
+	let details_element = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(surveyid)]);
   
   
   let credits = Number(details_element[1]) + Number(survey_element.reward)

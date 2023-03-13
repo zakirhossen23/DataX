@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   } catch (error) {}
 
   
-  let useContract = await import("../../../contract/useContract.ts");
-  const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+  let useContract = await import("../../../contract/useContract.js");
+  const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	
   const { email, password } = req.body;
-	let output = await ReadContractByQuery(api, signerAddress, getQuery(contract,"Login"), [email, password]);
+	let output = await ReadContract(api, signerAddress, ("Login"), [email, password]);
   res.status(200).json({ status: 200, value: output })
 
 }

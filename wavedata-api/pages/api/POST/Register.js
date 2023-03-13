@@ -27,14 +27,14 @@ export default async function handler(req, res) {
 		await FixCors.default(res);
 	} catch (error) {}
 
-	let useContract = await import("../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+	let useContract = await import("../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	if (req.method !== "POST") {
 		res.status(405).json({status: 405, error: "Register must have POST request"});
 		return;
 	}
 	const {fullname, email, password} = req.body;
-	const result = await ReadContractByQuery(api,signerAddress, getQuery(contract,"CheckEmail"),[email])
+	const result = await ReadContract(api,signerAddress, ("CheckEmail"),[email])
     
 	if (result !== "False") {
 		res.status(403).json({status: 403, error: "Account already exists!"});

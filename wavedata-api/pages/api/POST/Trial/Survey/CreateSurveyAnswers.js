@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  let useContract = await import("../../../../../contract/useContract.ts");
-  const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+  let useContract = await import("../../../../../contract/useContract.js");
+  const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
     
 
   if (req.method !== 'POST') {

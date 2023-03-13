@@ -4,11 +4,11 @@ export default async function handler(req, res) {
 		await FixCors.default(res);
 	} catch (error) {}
 
-	let useContract = await import("../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
+	let useContract = await import("../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	
-	let userdetails = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(req.query.userid)]);
-	let fhir_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_fhirMap"), [Number(userdetails[6])]);
+	let userdetails = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(req.query.userid)]);
+	let fhir_element = await ReadContract(api, signerAddress, ("_fhirMap"), [Number(userdetails[6])]);
 	var newFhir = {
 		id: Number(fhir_element.userId),
 		family_name: fhir_element.familyName,

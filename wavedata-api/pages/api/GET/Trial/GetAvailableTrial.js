@@ -5,14 +5,14 @@ export default async function handler(req, res) {
     await FixCors.default(res);
   } catch (error) {}
 
-  let useContract = await import("../../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
-	let trial_id = await ReadContractByQuery(api, signerAddress, getQuery(contract,"GetOngoingTrial"), [Number(req.query.userid)]);
-	let totalTrials = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_TrialIds"));
+  let useContract = await import("../../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	let trial_id = await ReadContract (api, signerAddress, "GetOngoingTrial", [Number(req.query.userid)]);
+	let totalTrials = await  ReadContract(api, signerAddress, ("_TrialIds"));
 
   let all_available_trials = [];
   for (let i = 0; i < Number(totalTrials); i++) {
-    let trial_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"_trialMap"), [Number(i)]);
+    let trial_element = await ReadContract(api, signerAddress, ("_trialMap"), [Number(i)]);
 
     var newTrial = {
       id: Number(trial_element.trialId),

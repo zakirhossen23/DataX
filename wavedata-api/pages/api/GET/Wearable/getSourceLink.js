@@ -7,9 +7,9 @@ export default async function handler(req, res) {
 		await FixCors.default(res);
 	} catch (error) {}
 
-	let useContract = await import("../../../../contract/useContract.ts");
-	const {api, contract, signerAddress, sendTransaction, ReadContractByQuery, getMessage, getQuery} = await useContract.default();
-    let details_element = await ReadContractByQuery(api, signerAddress, getQuery(contract,"getUserDetails"), [Number(req.query.userid)]);
+	let useContract = await import("../../../../contract/useContract.js");
+	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+    let details_element = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(req.query.userid)]);
 	if (details_element[5] === "") {
 		let registerpage = await import("../../POST/Register");
 		details_element[5] = await registerpage.GenerateAccessToken(details_element[2]);
