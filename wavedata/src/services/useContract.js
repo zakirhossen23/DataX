@@ -21,7 +21,7 @@ export default function useContract() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (window.localStorage.getItem("type") === "Solflare" ) {
+			if (window.localStorage.getItem("type") === "Solflare") {
 				try {
 					await window.solflare.connect();
 					// Establish connection to the cluster
@@ -133,25 +133,36 @@ export default function useContract() {
 	async function ReadMapsByIdFromContract(variable, args = null) {
 		switch (variable) {
 			case "_userMap":
-				return( await getMapsFromContract("_userMap"))[args[0]];
+				return (await getMapsFromContract("_userMap"))[args[0]];
 			case "_trialMap":
-				return( await getMapsFromContract("_trialMap"))[args[0]];
+				return (await getMapsFromContract("_trialMap"))[args[0]];
 			case "_trialAudienceMap":
-				return( await getMapsFromContract("_trialAudienceMap"))[args[0]];
+				return (await getMapsFromContract("_trialAudienceMap"))[args[0]];
 			case "_surveyMap":
-				return( await getMapsFromContract("_surveyMap"))[args[0]];
+				return (await getMapsFromContract("_surveyMap"))[args[0]];
 			case "_categoryMap":
-				return( await getMapsFromContract("_categoryMap"))[args[0]];
+				return (await getMapsFromContract("_categoryMap"))[args[0]];
 			case "_sectionsMap":
-				return( await getMapsFromContract("_sectionsMap"))[args[0]];
+
+				let db = await getOutput();
+				let oldMaps = getAllContainsMapKeys(db.map, `_sectionsMap[${args[0]}]`);
+				let fullJSON = "";
+				for (let i = 0; i < oldMaps.length; i++) {
+					const mapName = oldMaps[i];
+					let value =  db.map.get(mapName)
+					if (value !== "-1"|| value !== null){
+						fullJSON +=value;
+					}
+				}
+				return fullJSON;
 			case "_fhirMap":
-				return( await getMapsFromContract("_fhirMap"))[args[0]];
+				return (await getMapsFromContract("_fhirMap"))[args[0]];
 			case "_ongoingMap":
-				return( await getMapsFromContract("_ongoingMap"))[args[0]];
+				return (await getMapsFromContract("_ongoingMap"))[args[0]];
 			case "_questionanswerdMap":
-				return( await getMapsFromContract("_questionanswerdMap"))[args[0]];
+				return (await getMapsFromContract("_questionanswerdMap"))[args[0]];
 			case "_completedsurveyMap":
-				return( await getMapsFromContract("_completedsurveyMap"))[args[0]];
+				return (await getMapsFromContract("_completedsurveyMap"))[args[0]];
 
 		}
 	}
@@ -159,7 +170,7 @@ export default function useContract() {
 	//Using all here
 	async function ReadContract(api, signerAddress, method, args = null) {
 
-		if (args === null || args===[]) {
+		if (args === null || args === []) {
 			return await ReadVariablesFromContract(method);
 		}
 
@@ -351,29 +362,61 @@ export async function CreateSurvey(trialId, userId, name, description, date, ima
 	_surveyMap.push(obj);
 	await UpdateOrInsertData('_surveyMap', JSON.stringify(_surveyMap));
 }
+export async function getCurrentStringSize(key, value) {
 
-export async function CreateOrSaveSections(surveyId, metadata) {
+	let instruction_data = {
+		"method": "UpdateOrInsert",
+		"args": [key, value]
+	}
+	let buffer_instruction = Buffer.from(JSON.stringify(instruction_data), "utf-8");
+	return buffer_instruction.length;
 
-	let db = await getOutput();
-	let _sectionsMap = db.map.get("_sectionsMap") !== undefined ? JSON.parse(db.map.get("_sectionsMap")) : [];
-	let found = false;
-	for (let i = 0; i < _sectionsMap.length; i++) {
-		const element = _sectionsMap[i];
-		if (surveyId === element.surveyId) {
-			_sectionsMap[i].metadata = metadata;
-			found = true;
+
+}
+export function getSlicedData(totalSize, metadata) {
+	let limit = 800;
+	let currentPos = 0;
+	let newStrArr = [];
+	if (totalSize > limit) {
+		for (let i = 0; totalSize > limit; i++) {
+			newStrArr.push(metadata.slice(currentPos, (currentPos + limit)));
+			totalSize -= limit;
+			currentPos += limit;
 		}
 	}
-	if (!found){
-		var obj = {
-			surveyId: surveyId,
-			metadata: metadata
-		};
-		_sectionsMap.push(obj);
 
+	newStrArr.push(metadata.slice(currentPos, (currentPos + limit)));
+	return newStrArr
+}
+export function getAllContainsMapKeys(mapData, keyname) {
+	let allFoundKeys = [];
+	let allkeys = Array.from(mapData.keys());
+	for (let i = 0; i < allkeys.length; i++) {
+		if (allkeys[i].includes(keyname)) {
+			allFoundKeys.push(allkeys[i]);
+		}
 	}
-	await UpdateOrInsertData('_sectionsMap', JSON.stringify(_sectionsMap));
+	return allFoundKeys;
+}
+export async function CreateOrSaveSections(surveyId, metadata) {
+	let db = await getOutput();
+	let totalSize = await getCurrentStringSize("_sectionsMap", metadata);
+	let metadatas = getSlicedData(totalSize, metadata);
+	let oldMaps = getAllContainsMapKeys(db.map, "_sectionsMap");
 
+	if (oldMaps.length >= metadatas.length) {
+		for (let i = 0; i < oldMaps.length; i++) {
+			const data = metadatas.length > i ? metadatas[i] : "-1";
+			let mapName = `_sectionsMap[${surveyId}][${i}]`;
+			await UpdateOrInsertData(mapName, data);
+		}
+	} else {
+		for (let i = 0; i < metadatas.length; i++) {
+			const data = metadatas[i];
+			let mapName = `_sectionsMap[${surveyId}][${i}]`;
+			await UpdateOrInsertData(mapName, data);
+		}
+	}
 }
 export async function CreateSurveyCategory(name, image) {
 	let db = await getOutput();
@@ -441,7 +484,7 @@ export async function UpdateAudience(trialId, audienceInfo) {
 			found = true;
 		}
 	}
-	if (!found){
+	if (!found) {
 		var obj = {
 			trialId: trialId,
 			audienceInfo: audienceInfo

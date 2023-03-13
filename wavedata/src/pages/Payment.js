@@ -24,7 +24,7 @@ function Payment() {
       if (contract){
          let userid = Cookies.get("userid");	
 		 let userdetails = await ReadContract(api,signerAddress, "getUserDetails",[Number(userid)]);
-         setprivatekey(userdetails[4].substring(0,10) + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+         setprivatekey(userdetails.privatekey.substring(0,10) + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
       }
    }
 

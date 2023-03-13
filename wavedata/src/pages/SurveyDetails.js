@@ -236,7 +236,7 @@ function SurveyDetails() {
 			sleep(100);
 			try {
 				
-			let SectionsInfo =  JSON.parse((await ReadContract(api, signerAddress, "_sectionsMap", [parseInt(0)])).metadata);
+			let SectionsInfo =  JSON.parse((await ReadContract(api, signerAddress, "_sectionsMap", [parseInt(0)])));
 				setsectionsdata(SectionsInfo);
 			} catch (error) {}
 
