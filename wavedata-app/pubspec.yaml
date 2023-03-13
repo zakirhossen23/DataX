@@ -43,12 +43,12 @@ dependencies:
   shared_preferences: ^2.0.13
   image_picker:
   get:
-  google_fonts:
-  jiffy:
+  google_fonts: ^3.0.1
+  jiffy: ^4.1.0
   path_provider: 
   qr_flutter: 
   barcode_scan_fix: 
-  syncfusion_flutter_charts:
+  syncfusion_flutter_charts: 20.3.49
   intl: 
 
 dev_dependencies:

@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   } catch (error) {}
 
   let useContract = await import("../../../../contract/useContract.js");
-	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	let trial_id = await ReadContract (api, signerAddress, "GetOngoingTrial", [Number(req.query.userid)]);
 	let totalTrials = await  ReadContract(api, signerAddress, ("_TrialIds"));
 

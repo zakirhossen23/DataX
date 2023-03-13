@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
   let useContract = await import("../../../../../contract/useContract.js");
-  const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+  const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
     
 
   if (req.method !== 'POST') {
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const item = alldata[i];
     const { trialid,userid,surveyid, sectionid,questionid ,answer  } = item;
   
-    await sendTransaction(api,contract,signerAddress, "CreateQuestionAnswer",[Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer]);
+    await sendTransaction(api,signerAddress, "CreateQuestionAnswer",[Number(trialid),Number(userid),Number(surveyid),sectionid,questionid ,answer]);
     await sleep(1000);
   }
 

@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   } catch (error) {}
 
   let useContract = await import("../../../../contract/useContract.js");
-	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 
 	let trial_id = await ReadContract(api, signerAddress, ("GetOngoingTrial"), [Number(req.query.userid)]);
   if (trial_id !== "False") {
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
     let all_trail_surveys = [];
     for (let i = 0; i < all_surveys.length; i++) {
-      let survey_element = await ReadContract(api, signerAddress, ("_surveyMap"), [Number(all_surveys[i])]);
+      let survey_element =  await ReadContract(api, signerAddress, ("_surveyMap"), [Number(all_surveys[i].surveyId)]);
 
       var new_survey = {
         id: Number(survey_element.surveyId),

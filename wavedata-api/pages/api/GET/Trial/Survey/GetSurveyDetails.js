@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../../../contract/useContract.js");
-	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 
 	let survey_element = await ReadContract(api, signerAddress, "_surveyMap", [Number(req.query.surveyid)]);
 	var new_survey = {
@@ -21,16 +21,16 @@ export default async function handler(req, res) {
 	};
 	let allCategory = [];
 
-	let totalCategories = await (api, signerAddress, getQuery(contract, "_SurveyCategoryIds"));
+	let totalCategories = await ReadContract(api, signerAddress, ( "_SurveyCategoryIds"));
 	for (let i = 0; i < Number(totalCategories); i++) {
-		let element = await (api, signerAddress, getQuery(contract, "_categoryMap"), [Number(i)]);
+		let element = await ReadContract (api, signerAddress, ( "_categoryMap"), [Number(i)]);
 		allCategory.push({
 			name: element.name,
 			image: element.image
 		});
 	}
 
-	let secionElement = await (api, signerAddress, getQuery(contract, "_sectionsMap"), [Number(req.query.surveyid)]);
+	let secionElement = await ReadContract(api, signerAddress, ( "_sectionsMap"), [Number(req.query.surveyid)]);
 	let final = {
 		Survey: new_survey,
 		Sections: JSON.parse(secionElement),

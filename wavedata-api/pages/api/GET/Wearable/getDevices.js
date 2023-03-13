@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../../contract/useContract.js");
-	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	let details_element = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(req.query.userid)]);
 	
 	if (details_element[5] === "") {
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 		details_element[5] = await registerpage.GenerateAccessToken(details_element[2]);
 
 		
-	await sendTransaction(api,contract,signerAddress, "UpdateAccessToken",[Number(req.query.userid), details_element[5]]);
+	await sendTransaction(api,signerAddress, "UpdateAccessToken",[Number(req.query.userid), details_element[5]]);
 	}
 	var myHeaders = new Headers();
 	myHeaders.append("AppAuthorization", wearableinfo.AppAuthorization);

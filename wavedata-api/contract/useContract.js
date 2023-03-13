@@ -1,8 +1,10 @@
 import {
 	establishConnection,
 	checkProgram,
+	CreateNewPDA,
 	getOutput,
 	UpdateOrInsertData,
+	
 } from './client/wavedata.mjs';
 export default async function useContract() {
 	let contractInstance = {
@@ -23,50 +25,50 @@ export default async function useContract() {
 	async function sendTransaction(api, signerAddress, method, args = []) {
 		await CreateNewPDA();
 		switch (method) {
-			case "CreateAccount":
-				await CreateAccount.apply(this, args)
+			case "CreateAccount":				
+				return await CreateAccount.apply(this, args)
 				break;
 			case "UpdatePrivatekey":
-				await UpdatePrivatekey.apply(this, args);
+				return await UpdatePrivatekey.apply(this, args);
 				break;
 			case "UpdateAccessToken":
-				await UpdateAccessToken.apply(this, args);
+				return await UpdateAccessToken.apply(this, args);
 				break;
 			case "CreateTrial":
-				await CreateTrial.apply(this, args);
+				return await CreateTrial.apply(this, args);
 				break;
 			case "CreateSurvey":
-				await CreateSurvey.apply(this, args);
+				return await CreateSurvey.apply(this, args);
 				break;
 			case "CreateOrSaveSections":
-				await CreateOrSaveSections.apply(this, args);
+				return await CreateOrSaveSections.apply(this, args);
 				break;
 			case "CreateSurveyCategory":
-				await CreateSurveyCategory.apply(this, args);
+				return await CreateSurveyCategory.apply(this, args);
 				break;
 			case "UpdateTrial":
-				await UpdateTrial.apply(this, args);
+				return await UpdateTrial.apply(this, args);
 				break;
 			case "UpdateSurvey":
-				await UpdateSurvey.apply(this, args);
+				return await UpdateSurvey.apply(this, args);
 				break;
 			case "UpdateReward":
-				await UpdateReward.apply(this, args);
+				return await UpdateReward.apply(this, args);
 				break;
 			case "UpdateAudience":
-				await UpdateAudience.apply(this, args);
+				return await UpdateAudience.apply(this, args);
 				break;
 			case "UpdateUser":
-				await UpdateUser.apply(this, args);
+				return await UpdateUser.apply(this, args);
 				break;
 			case "UpdateFhir":
-				await UpdateFhir.apply(this, args);
+				return await UpdateFhir.apply(this, args);
 				break;
 			case "CreateOngoingTrail":
-				await CreateOngoingTrail.apply(this, args);
+				return await CreateOngoingTrail.apply(this, args);
 				break;
 			case "CreateCompletedSurveys":
-				await CreateCompletedSurveys.apply(this, args);
+				return await CreateCompletedSurveys.apply(this, args);
 				break;
 		}
 
@@ -97,6 +99,7 @@ export default async function useContract() {
 
 	//Not using in front
 	async function ReadMapsByIdFromContract(variable, args = null) {
+		let db,oldMaps,fullJSON ;
 		switch (variable) {
 			case "_userMap":
 				return (await getMapsFromContract("_userMap"))[args[0]];
@@ -109,10 +112,9 @@ export default async function useContract() {
 			case "_categoryMap":
 				return (await getMapsFromContract("_categoryMap"))[args[0]];
 			case "_sectionsMap":
-
-				let db = await getOutput();
-				let oldMaps = getAllContainsMapKeys(db.map, `_sectionsMap[${args[0]}]`);
-				let fullJSON = "";
+				 db = await getOutput();
+				 oldMaps = getAllContainsMapKeys(db.map, `_sectionsMap[${args[0]}]`);
+				 fullJSON = "";
 				for (let i = 0; i < oldMaps.length; i++) {
 					const mapName = oldMaps[i];
 					let value =  db.map.get(mapName)
@@ -122,7 +124,18 @@ export default async function useContract() {
 				}
 				return fullJSON;
 			case "_fhirMap":
-				return (await getMapsFromContract("_fhirMap"))[args[0]];
+				 db = await getOutput();
+				 oldMaps = getAllContainsMapKeys(db.map, `_fhirMap[${args[0]}]`);
+				 fullJSON = "";
+				for (let i = 0; i < oldMaps.length; i++) {
+					const mapName = oldMaps[i];
+					let value =  db.map.get(mapName)
+					if (value !== "-1"|| value !== null){
+						fullJSON +=value;
+					}
+				}
+				return fullJSON;
+
 			case "_ongoingMap":
 				return (await getMapsFromContract("_ongoingMap"))[args[0]];
 			case "_questionanswerdMap":
@@ -242,7 +255,8 @@ export async function getAllCompletedSurveysIDByUser(userId) {
 
 
 //*****************************Send Transaction Functions*********************************//
-export async function CreateAccount(full_name, email, password) {
+export async function CreateAccount(full_name, email, password,accessToken) {
+	
 	let db = await getOutput();
 	var obj = {
 		userId: 0,
@@ -250,10 +264,10 @@ export async function CreateAccount(full_name, email, password) {
 		email: email,
 		password: password,
 		privatekey: "",
-		walletaddress: window.solflare.publicKey.toBase58(),
+		walletaddress: "",
 		image: "https://i.postimg.cc/SsxGw5cZ/person.jpg",
 		credits: 0,
-		accesstoken: "",
+		accesstoken: accessToken,
 		fhirid: 0
 
 	}
@@ -477,9 +491,12 @@ export async function UpdateUser(userId, image, credits) {
 }
 
 export async function UpdateFhir(userId, familyName, givenName, identifier, phone, gender, about, patient_id) {
+
 	let db = await getOutput();
+	let oldMaps = getAllContainsMapKeys(db.map, "_fhirMap");
+
 	var obj = {
-		fhir_id: 0,
+		fhir_id: userId,
 		userId: userId,
 		familyName: familyName,
 		givenName: givenName,
@@ -489,21 +506,23 @@ export async function UpdateFhir(userId, familyName, givenName, identifier, phon
 		about: about,
 		patient_id: patient_id,
 	};
-	let _fhirMap = db.map.get("_fhirMap") !== undefined ? JSON.parse(db.map.get("_fhirMap")) : [];
-	let fhirid = _fhirMap.length;
-	obj['fhir_id'] = fhirid;
-	_fhirMap.push(obj);
-	await UpdateOrInsertData('_fhirMap', JSON.stringify(_fhirMap));
+	let metadata = JSON.stringify(obj);
+	let totalSize = await getCurrentStringSize("_fhirMap", metadata);
+	let metadatas = getSlicedData(totalSize, metadata);
 
-
-	let _userMap = db.map.get("_userMap") !== undefined ? JSON.parse(db.map.get("_userMap")) : [];
-	for (let i = 0; i < _userMap.length; i++) {
-		const element = _userMap[i];
-		if (userId === element.userId) {
-			_userMap[i].fhirid = fhirid;
+	if (oldMaps.length >= metadatas.length) {
+		for (let i = 0; i < oldMaps.length; i++) {
+			const data = metadatas.length > i ? metadatas[i] : "-1";
+			let mapName = `_fhirMap[${userId}][${i}]`;
+			await UpdateOrInsertData(mapName, data);
+		}
+	} else {
+		for (let i = 0; i < metadatas.length; i++) {
+			const data = metadatas[i];
+			let mapName = `_fhirMap[${userId}][${i}]`;
+			await UpdateOrInsertData(mapName, data);
 		}
 	}
-	await UpdateOrInsertData('_userMap', JSON.stringify(_userMap));
 
 }
 
@@ -562,7 +581,7 @@ export async function CreateCompletedSurveys(surveyId, userId, date, trialId) {
 		trialId: trialId,
 		userId: userId,
 		surveyId: surveyId,
-		date: date.clone(),
+		date: date,
 	};
 	let _completedsurveyMap = db.map.get("_completedsurveyMap") !== undefined ? JSON.parse(db.map.get("_completedsurveyMap")) : [];
 	let completedSurveyId = _completedsurveyMap.length;
@@ -595,4 +614,7 @@ export function getArgs(args) {
 		}
 	}
 	return NewargsList;
+}
+export function base64DecodeUnicode(base64String) {
+	return Buffer.from(base64String, "base64").toString('utf8');
 }

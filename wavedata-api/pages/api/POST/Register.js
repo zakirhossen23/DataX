@@ -19,7 +19,7 @@ export async function GenerateAccessToken(fullname) {
 	};
 
 	let accessToken = await (await fetch("https://api.und-gesund.de/v5/accessToken", requestOptions)).text();
-	return "daf69cba6bb256a687c8c73e229f54d3";
+	return accessToken;
 }
 export default async function handler(req, res) {
 	try {
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 	} catch (error) {}
 
 	let useContract = await import("../../../contract/useContract.js");
-	const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+	const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	if (req.method !== "POST") {
 		res.status(405).json({status: 405, error: "Register must have POST request"});
 		return;
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 	}
 	let accessToken = await GenerateAccessToken(fullname);
 	
-	await sendTransaction(api,contract,signerAddress, "CreateAccount",[fullname, email, password, accessToken,signerAddress]);
+	 await sendTransaction(api,signerAddress, "CreateAccount",[fullname, email, password,accessToken]);
 	res.status(200).json({status: 200, value: "Registered!"});
 }
 

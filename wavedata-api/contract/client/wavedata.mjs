@@ -70,6 +70,14 @@ export async function establishConnection() {
 }
 
 
+export async function CreateNewPDA() {
+  userPubkey = await PublicKey.createWithSeed(
+    BackendKeyPair.publicKey,
+    SEED,
+    programId,
+  );
+}
+
 
 /**
  * Check if the program has been deployed
@@ -82,9 +90,11 @@ export async function checkProgram() {
     programId = programKeypair.publicKey;
   } catch (err) {
     console.error(err);
-
   }
+  
+  await CreateNewPDA();
 }
+
 
 export async function getAccountData(connection, account) {
   let nameAccount = await connection.getAccountInfo(

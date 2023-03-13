@@ -7,10 +7,10 @@ export default async function handler(req, res) {
 
   
   let useContract = await import("../../../contract/useContract.js");
-  const {api, contract, signerAddress, sendTransaction, ReadContract} = await useContract.default();
+  const {api,  signerAddress, sendTransaction, ReadContract} = await useContract.default();
 	
   const { email, password } = req.body;
 	let output = await ReadContract(api, signerAddress, ("Login"), [email, password]);
-  res.status(200).json({ status: 200, value: output })
+  res.status(200).json({ status: 200, value: output.toString() })
 
 }
