@@ -38,7 +38,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     allCategory = [];
 
     var url = Uri.parse(
-        'https://wavedata-polkadot-api.onrender.com/api/GET/Trial/Survey/GetSurveyDetails?surveyid=${surveyid}');
+        'https://wavedata-solana-api.onrender.com/api/GET/Trial/Survey/GetSurveyDetails?surveyid=${surveyid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -120,7 +120,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
       });
     }
     var url = Uri.parse(
-        'https://wavedata-polkadot-api.onrender.com/api/POST/Trial/Survey/CreateSurveyAnswers');
+        'https://wavedata-solana-api.onrender.com/api/POST/Trial/Survey/CreateSurveyAnswers');
     await http.post(url, headers: POSTheader, body: json.encode(data));
     setState(() {
       isloading = false;
@@ -137,7 +137,7 @@ class _QuestionnaireScreenState extends ConsumerState<QuestionnaireScreen> {
     int trialid = int.parse(allSections[0]['trialid']);
 
     var url = Uri.parse(
-        'https://wavedata-polkadot-api.onrender.com/api/POST/Trial/Survey/CreateCompletedSurvey');
+        'https://wavedata-solana-api.onrender.com/api/POST/Trial/Survey/CreateCompletedSurvey');
     await http.post(url, headers: POSTheader, body: {
       'surveyid': surveyid.toString(),
       'userid': userid.toString(),

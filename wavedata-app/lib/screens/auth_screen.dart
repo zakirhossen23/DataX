@@ -45,7 +45,7 @@ class AuthScreenApp extends State<AuthScreen> {
 
   Future<void> LoginAccount() async {
     var url =
-        Uri.parse('https://wavedata-polkadot-api.onrender.com/api/POST/Login');
+        Uri.parse('https://wavedata-solana-api.onrender.com/api/POST/Login');
     final response = await http.post(url,
         headers: POSTheader,
         body: {'email': emailTXT.text, 'password': passwordTXT.text});

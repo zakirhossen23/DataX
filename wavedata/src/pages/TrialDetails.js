@@ -295,7 +295,7 @@ function TrialDetails() {
 		for (let i = 0; i < Number(totalOngoing); i++) {
 			let element = await ReadContract(api, signerAddress, "_ongoingMap", [parseInt(i)]);
 			let user_element = await ReadContract(api, signerAddress, "getUserDetails", [Number(element.userId)]);
-			let fhir_element = await ReadContract(api, signerAddress,"_fhirMap", [Number(user_element[6])]);
+			let fhir_element = await ReadContract(api, signerAddress,"_fhirMap", [Number(user_element.fhirId)]);
 
 			if (Number(element.trialId) === parseInt(params.id)) {
 				setContributors((prevState) => [
@@ -303,7 +303,7 @@ function TrialDetails() {
 					{
 						id: i,
 						user_id: Number(element.userId),
-						name: user_element[2],
+						name: user_element.name,
 						family_name: fhir_element.familyName,
 						givenname: fhir_element.givenName,
 						identifier: fhir_element.identifier,
