@@ -504,7 +504,7 @@ export async function UpdateFhir(userId, familyName, givenName, identifier, phon
 		phone: phone,
 		gender: gender,
 		about: about,
-		patient_id: patient_id,
+		patientId: patient_id,
 	};
 	let metadata = JSON.stringify(obj);
 	let totalSize = await getCurrentStringSize("_fhirMap", metadata);
@@ -526,14 +526,14 @@ export async function UpdateFhir(userId, familyName, givenName, identifier, phon
 
 }
 
-export async function CreateOngoingTrail(trialId, userId, date, given_permission) {
+export async function CreateOngoingTrail(trialId, userId, date, givenPermission) {
 	let db = await getOutput();
 	var obj = {
 		ongoingId: 0,
 		trialId: trialId,
 		userId: userId,
 		date: date,
-		given_permission: given_permission,
+		givenPermission: givenPermission,
 	};
 	let _ongoingMap = db.map.get("_ongoingMap") !== undefined ? JSON.parse(db.map.get("_ongoingMap")) : [];
 	let ongoingId = _ongoingMap.length;
@@ -546,7 +546,7 @@ export async function CreateOngoingTrail(trialId, userId, date, given_permission
 	let _trialMap = db.map.get("_trialMap") !== undefined ? JSON.parse(db.map.get("_trialMap")) : [];
 	for (let i = 0; i < _trialMap.length; i++) {
 		const element = _trialMap[i];
-		if (userId === element.userId) {
+		if (trialId === element.trialId) {
 			_trialMap[i].contributors += 1;
 		}
 	}

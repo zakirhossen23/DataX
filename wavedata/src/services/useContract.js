@@ -131,6 +131,7 @@ export default function useContract() {
 
 	//Not using in front
 	async function ReadMapsByIdFromContract(variable, args = null) {
+		let db, oldMaps, fullJSON;
 		switch (variable) {
 			case "_userMap":
 				return (await getMapsFromContract("_userMap"))[args[0]];
@@ -144,19 +145,30 @@ export default function useContract() {
 				return (await getMapsFromContract("_categoryMap"))[args[0]];
 			case "_sectionsMap":
 
-				let db = await getOutput();
-				let oldMaps = getAllContainsMapKeys(db.map, `_sectionsMap[${args[0]}]`);
-				let fullJSON = "";
+				db = await getOutput();
+				oldMaps = getAllContainsMapKeys(db.map, `_sectionsMap[${args[0]}]`);
+				fullJSON = "";
 				for (let i = 0; i < oldMaps.length; i++) {
 					const mapName = oldMaps[i];
-					let value =  db.map.get(mapName)
-					if (value !== "-1"|| value !== null){
-						fullJSON +=value;
+					let value = db.map.get(mapName)
+					if (value !== "-1" || value !== null) {
+						fullJSON += value;
 					}
 				}
 				return fullJSON;
 			case "_fhirMap":
-				return (await getMapsFromContract("_fhirMap"))[args[0]];
+				db = await getOutput();
+				oldMaps = getAllContainsMapKeys(db.map, `_fhirMap[${args[0]}]`);
+				fullJSON = "";
+				for (let i = 0; i < oldMaps.length; i++) {
+					const mapName = oldMaps[i];
+					let value = db.map.get(mapName)
+					if (value !== "-1" || value !== null) {
+						fullJSON += value;
+					}
+				}
+				return fullJSON;
+
 			case "_ongoingMap":
 				return (await getMapsFromContract("_ongoingMap"))[args[0]];
 			case "_questionanswerdMap":
@@ -521,7 +533,7 @@ export async function UpdateFhir(userId, familyName, givenName, identifier, phon
 		phone: phone,
 		gender: gender,
 		about: about,
-		patient_id: patient_id,
+		patientId: patient_id,
 	};
 	let _fhirMap = db.map.get("_fhirMap") !== undefined ? JSON.parse(db.map.get("_fhirMap")) : [];
 	let fhirid = _fhirMap.length;
@@ -541,14 +553,14 @@ export async function UpdateFhir(userId, familyName, givenName, identifier, phon
 
 }
 
-export async function CreateOngoingTrail(trialId, userId, date, given_permission) {
+export async function CreateOngoingTrail(trialId, userId, date, givenPermission) {
 	let db = await getOutput();
 	var obj = {
 		ongoingId: 0,
 		trialId: trialId,
 		userId: userId,
 		date: date,
-		given_permission: given_permission,
+		givenPermission: givenPermission,
 	};
 	let _ongoingMap = db.map.get("_ongoingMap") !== undefined ? JSON.parse(db.map.get("_ongoingMap")) : [];
 	let ongoingId = _ongoingMap.length;

@@ -23,7 +23,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 		if (typeof window?.contract !== "undefined") {
 			let element = await ReadContract(api,signerAddress,"_ongoingMap",[Number(id)])
 			let user_element = await ReadContract(api,signerAddress,"getUserDetails",[Number(element.userId)])			
-			let fhir_element = await ReadContract(api, signerAddress, "_fhirMap", [Number(user_element[6])]);
+			let fhir_element = JSON.parse( await ReadContract(api, signerAddress, "_fhirMap", [Number(element.userId)]));
 
 			let given_permission = eval("(" + element.givenPermission + ")");
 			let FHIRS_COLS = [];
@@ -83,8 +83,8 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 			setContributor({
 				id: id,
 				user_id: Number(element.userId),
-				photo: user_element[0],
-				name: user_element[2],
+				photo: user_element.image,
+				name: user_element.name,
 				family_name: fhir_element.familyName,
 				givenname: fhir_element.givenName,
 				identifier: fhir_element.identifier,
@@ -101,7 +101,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 			let chart_all_liner = [];
 			let chart_all_bar = [];
 			if (given_permission.blood) {
-				let bloodData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 3001);
+				let bloodData = await GetOneValueTypesWearableData(Number(element.userId), user_element.accesstoken, 3001);
 				chart_all_liner.push({
 					id: "blood",
 					title: "Weekly Blood Date",
@@ -110,7 +110,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.sleep) {
-				let sleepData = await GetSleepWearableData(Number(element.userId), user_element[5]);
+				let sleepData = await GetSleepWearableData(Number(element.userId), user_element.accesstoken);
 				chart_all_bar.push({
 					id: "sleep",
 					title: "Weekly Sleep Duration",
@@ -119,7 +119,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.steps) {
-				let stepsData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 1000);
+				let stepsData = await GetOneValueTypesWearableData(Number(element.userId), user_element.accesstoken, 1000);
 				chart_all_bar.push({
 					id: "steps",
 					title: "Weekly Steps",
@@ -128,7 +128,7 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 				});
 			}
 			if (given_permission.calories) {
-				let caloriesData = await GetOneValueTypesWearableData(Number(element.userId), user_element[5], 1010);
+				let caloriesData = await GetOneValueTypesWearableData(Number(element.userId), user_element.accesstoken, 1010);
 				chart_all_bar.push({
 					id: "calories",
 					title: "Weekly Calories Burned",
@@ -150,11 +150,11 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 	}
 	async function GetSleepWearableData(userid, userToken) {
 		var today = new Date();
-		var startDate = getFormattedDate(new Date("2023-01-11"));
-		var endDate = getFormattedDate(new Date("2023-01-17"));
+		var startDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()  - 10));
+		var endDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
 		let response = await (
 			await fetch(
-				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005`
+				`https://wavedata-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005`
 			)
 		).json();
 		let parsed = JSON.parse(response.value);
@@ -187,11 +187,11 @@ export default function ViewControbutiors({show,setShow, onHide, id}) {
 	}
 	async function GetOneValueTypesWearableData(userid, userToken, valueTypes) {
 		var today = new Date();
-		var startDate = getFormattedDate(new Date("2023-01-11"));
-		var endDate = getFormattedDate(new Date("2023-01-17"));
+		var startDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate()  - 10));
+		var endDate = getFormattedDate(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1));
 		let response = await (
 			await fetch(
-				`https://wavedata-polkadot-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=${valueTypes}`
+				`https://wavedata-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${userToken}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=${valueTypes}`
 			)
 		).json();
 		let parsed = JSON.parse(response.value);

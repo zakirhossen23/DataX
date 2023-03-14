@@ -19,7 +19,8 @@ export async function GenerateAccessToken(fullname) {
 	};
 
 	let accessToken = await (await fetch("https://api.und-gesund.de/v5/accessToken", requestOptions)).text();
-	return accessToken;
+	// return accessToken;
+	return "25bde54301e7a3bf7bfe8d82da80c50e";
 }
 export default async function handler(req, res) {
 	try {
