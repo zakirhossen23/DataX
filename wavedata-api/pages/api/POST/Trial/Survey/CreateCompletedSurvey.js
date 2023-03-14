@@ -1,4 +1,4 @@
-import {ethers} from 'ethers'
+
 export default async function handler(req, res) {
   try {
     let FixCors = await import("../../../../../contract/fixCors.js");
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
 	let survey_element = await ReadContract(api, signerAddress, ("_surveyMap"), [Number(surveyid)]);
   
-	let details_element = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(surveyid)]);
+	let details_element = await ReadContract(api, signerAddress, ("getUserDetails"), [Number(userid)]);
   
   
   let credits = Number(details_element.credits) + Number(survey_element.reward)

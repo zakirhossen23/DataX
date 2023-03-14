@@ -1,4 +1,4 @@
-import {ethers} from 'ethers'
+
 export default async function handler(req, res) {
   try {
     let FixCors = await import("../../../contract/fixCors.js");
