@@ -228,7 +228,7 @@ function TrialDetails() {
 
 			let allAudiences = [];
 			try {
-				allAudiences = JSON.parse((await ReadContract(api, signerAddress,"_trialAudienceMap", [Number(params.id)])));
+				allAudiences = JSON.parse((await ReadContract(api, signerAddress,"_trialAudienceMap", [Number(params.id)])).audienceInfo);
 			} catch (e) {
 				allAudiences = [];
 			}
