@@ -21,7 +21,7 @@ export default function useContract() {
 
 	useEffect(() => {
 		const fetchData = async () => {
-			if (window.localStorage.getItem("type") === "Solflare") {
+			if (window.localStorage.getItem("type") === "BraveSolana") {
 				try {
 					await window.braveSolana.connect();
 					// Establish connection to the cluster

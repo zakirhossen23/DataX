@@ -8,7 +8,7 @@ import "./Login.css";
 function Login() {
 	let navigate = useNavigate();
 	const { api, contract, signerAddress, sendTransaction, ReadContract,   } = useContract();
-	const [isSolflareConnected, setisSolflareConnected] = useState(false);
+	const [isBraveSolanaConnected, setisBraveSolanaConnected] = useState(false);
 
 	window.onload = (e) => {
 		if (Cookies.get("login") === "true") {
@@ -25,17 +25,17 @@ function Login() {
 			if (typeof window.braveSolana !== "undefined") {
 				await window.braveSolana.connect();
 				if (window.braveSolana.isConnected) {
-					window.localStorage.setItem("type", "Solflare");
-					setisSolflareConnected(true);
+					window.localStorage.setItem("type", "BraveSolana");
+					setisBraveSolanaConnected(true);
 				} else {
-					setisSolflareConnected(false);
+					setisBraveSolanaConnected(false);
 				}
 			}else{
-				window.open("https://chrome.google.com/webstore/detail/solflare-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic","_about");
+				window.open("https://chrome.google.com/webstore/detail/BraveSolana-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic","_about");
 			}
 		} else {
-			window.localStorage.setItem("type", "non-Solflare");
-			setisSolflareConnected(true);
+			window.localStorage.setItem("type", "non-BraveSolana");
+			setisBraveSolanaConnected(true);
 		}
 	}
 
@@ -99,18 +99,18 @@ function Login() {
 	async function check() {
 		var buttonTextBox = document.getElementById("buttonText");
 		var LoadingICON = document.getElementById("LoadingICON");
-		if (window.localStorage.getItem("type") === "Solflare") {
+		if (window.localStorage.getItem("type") === "BraveSolana") {
 			try {
 				await window.braveSolana.connect();
-				setisSolflareConnected(true);
+				setisBraveSolanaConnected(true);
 
 			} catch (e) {
-				setisSolflareConnected(false);
+				setisBraveSolanaConnected(false);
 			}
 		} else {
-			setisSolflareConnected(false);
+			setisBraveSolanaConnected(false);
 		}
-		if (isSolflareConnected) {
+		if (isBraveSolanaConnected) {
 			if (contract != null) {
 				LoadingICON.style.display = "none";
 				buttonTextBox.style.display = "block";
@@ -151,7 +151,7 @@ function Login() {
 							Password
 							<input type="password" id="password" name="password" className="mt-2 h-10 border border-gray-200 rounded-md outline-none px-2 focus:border-gray-400" />
 						</label>
-						{isSolflareConnected ? (
+						{isBraveSolanaConnected ? (
 							<>
 								<button
 									onClick={LoginClick}
@@ -169,7 +169,7 @@ function Login() {
 									}}
 									className="bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer"
 								>
-									<span id="buttonText">Connect Solflare</span>
+									<span id="buttonText">Connect BraveSolana</span>
 								</button>
 								<button
 									onClick={(e) => {
@@ -177,7 +177,7 @@ function Login() {
 									}}
 									className="bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer hidden"
 								>
-									<span id="buttonText">Continue without Solflare</span>
+									<span id="buttonText">Continue without BraveSolana</span>
 								</button>
 							</>
 						)}

@@ -8,7 +8,7 @@ function Register() {
     let navigate = useNavigate();
     const { api, contract, signerAddress, sendTransaction,  ReadContract   } = useContract();
 
-    const [isSolflareConnected, setisSolflareConnected] = useState(false)
+    const [isBraveSolanaConnected, setisBraveSolanaConnected] = useState(false)
 
     function loginLink() {
         navigate("/login", { replace: true });
@@ -70,32 +70,32 @@ function Register() {
             if (typeof window.braveSolana !== "undefined") {
                 await window.braveSolana.connect();
                 if (window.braveSolana.isConnected) {
-                    window.localStorage.setItem("type", "Solflare");
-                    setisSolflareConnected(true);
+                    window.localStorage.setItem("type", "BraveSolana");
+                    setisBraveSolanaConnected(true);
                 } else {
-                    setisSolflareConnected(false);
+                    setisBraveSolanaConnected(false);
                 }
             } else {
-                window.open("https://chrome.google.com/webstore/detail/solflare-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic", "_about");
+                window.open("https://chrome.google.com/webstore/detail/BraveSolana-wallet/bhhhlbepdkbapadjdnnojkbgioiodbic", "_about");
             }
         } else {
-            window.localStorage.setItem("type", "non-Solflare")
-            setisSolflareConnected(true);
+            window.localStorage.setItem("type", "non-BraveSolana")
+            setisBraveSolanaConnected(true);
         }
     }
     useEffect(() => {
         async function check() {
-            if (window.localStorage.getItem("type") === "Solflare") {
+            if (window.localStorage.getItem("type") === "BraveSolana") {
                 try {
                     await window.braveSolana.connect();
-                    setisSolflareConnected(true);
+                    setisBraveSolanaConnected(true);
 
                 } catch (e) {
-                    setisSolflareConnected(false);
+                    setisBraveSolanaConnected(false);
                 }
-                setisSolflareConnected(true);
+                setisBraveSolanaConnected(true);
             } else {
-                setisSolflareConnected(false);
+                setisBraveSolanaConnected(false);
             }
 
         }
@@ -134,7 +134,7 @@ function Register() {
                             Repeat password
                             <input type='password' name="confirm-password" required className="mt-2 h-10 border border-gray-200 rounded-md outline-none px-2 focus:border-gray-400" />
                         </label>
-                        {(isSolflareConnected) ? (<>
+                        {(isBraveSolanaConnected) ? (<>
                             <button id='registerBTN' onClick={RegisterAcc} className="bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer">
                                 <i id='LoadingICON' style={{ display: "none" }} className="select-none block w-12 m-0 fa fa-circle-o-notch fa-spin"></i>
                                 <span id='buttonText'>Register</span>
@@ -142,7 +142,7 @@ function Register() {
 
                         </>) : (<>
                             <button onClick={e => { onClickConnect(1) }} className="bg-orange-500 text-white rounded-md shadow-md h-10 w-full mt-3 hover:bg-orange-600 transition-colors overflow:hidden flex content-center items-center justify-center cursor-pointer">
-                                <span id='buttonText'>Connect Solflare</span>
+                                <span id='buttonText'>Connect BraveSolana</span>
                             </button>
 
                         </>)}
