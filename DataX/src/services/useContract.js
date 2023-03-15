@@ -23,7 +23,7 @@ export default function useContract() {
 		const fetchData = async () => {
 			if (window.localStorage.getItem("type") === "Solflare") {
 				try {
-					await window.solflare.connect();
+					await window.braveSolana.connect();
 					// Establish connection to the cluster
 					await establishConnection();
 
@@ -37,7 +37,7 @@ export default function useContract() {
 					console.log(output);
 					window.contract = true;
 					setContractInstance({
-						signerAddress: window.solflare.publicKey.toBase58(),
+						signerAddress: window.braveSolana.publicKey.toBase58(),
 						sendTransaction: sendTransaction,
 						ReadContract: ReadContract,
 						contract: true
@@ -296,7 +296,7 @@ export async function CreateAccount(full_name, email, password) {
 		email: email,
 		password: password,
 		privatekey: "",
-		walletaddress: window.solflare.publicKey.toBase58(),
+		walletaddress: window.braveSolana.publicKey.toBase58(),
 		image: "https://i.postimg.cc/SsxGw5cZ/person.jpg",
 		credits: 0,
 		accesstoken: "",

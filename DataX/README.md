@@ -17,10 +17,10 @@ You may also see any lint errors in the console.
 
 
 ## DataX
-DataX connects people who want to help with medical researchers who need data. The biggest difference with existing platforms is that we approach the problem fromt the side of the people who want to help cure a disease. WaveData has 2 roles: Organizer and users/patients.
+DataX connects people who want to help with medical researchers who need data. The biggest difference with existing platforms is that we approach the problem fromt the side of the people who want to help cure a disease. DataX has 2 roles: Organizer and users/patients.
 
-With the DataX marketplace the organizer can create their trials and surveys and set the questions, rewards etc. With the WaveData app, peoople can download a user-friendly app to survey and join trials.
+With the DataX marketplace the organizer can create their trials and surveys and set the questions, rewards etc. With the DataX app, peoople can download a user-friendly app to survey and join trials.
 
-DataX helps each user and organizer to keep touch everyday. On WaveData the organizer can check how many people have contributed and what their answers are. WaveData provides chart analysis options for the organizer to keep updated with better understanding.
+DataX helps each user and organizer to keep touch everyday. On DataX the organizer can check how many people have contributed and what their answers are. DataX provides chart analysis options for the organizer to keep updated with better understanding.
 
 For DataX, we are using Tron to store user's details, trial details, Rewards details (for each Trial), Survey, Audiences, Contributors and retirieving those in our website.

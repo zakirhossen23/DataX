@@ -554,7 +554,7 @@ function SurveyDetails() {
 			// for (let index = 0; index < sectionsdata[sectindex].questions.length; index++) {
 			//    const eleQ = sectionsdata[sectindex].questions[index];
 			//    axios
-			//       .post(`https://cors-anyhere.herokuapp.com/https://datax.i.tgcloud.io:14240/restpp/query/WaveData/GetSurveyAnswers?questionidTXT=${encodeURIComponent(eleQ.id)}`, {}, {
+			//       .post(`https://cors-anyhere.herokuapp.com/https://datax.i.tgcloud.io:14240/restpp/query/DataX/GetSurveyAnswers?questionidTXT=${encodeURIComponent(eleQ.id)}`, {}, {
 			//          headers: {
 			//             "accept-language": "en-US,en;q=0.9",
 			//             "Authorization": "Bearer h6t28nnpr3e58pdm1c1miiei4kdcejuv",

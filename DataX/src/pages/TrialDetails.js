@@ -196,7 +196,7 @@ function TrialDetails() {
 		seting([]);
 		var done = new Promise(async (resolve, reject) => {
 			const textDelete = `DeleteAudience?idTXT=${parseInt(all[specific].id)}`;
-			await fetch(`https://cors-anyhere.herokuapp.com/https://datax.i.tgcloud.io:14240/restpp/query/WaveData/${textDelete}`, {
+			await fetch(`https://cors-anyhere.herokuapp.com/https://datax.i.tgcloud.io:14240/restpp/query/DataX/${textDelete}`, {
 				"headers": {
 					"accept-language": "en-US,en;q=0.9",
 					"Authorization": "Bearer h6t28nnpr3e58pdm1c1miiei4kdcejuv"

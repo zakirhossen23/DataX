@@ -70,7 +70,7 @@ const dataSchema = new Map([
 export async function establishConnection() {
   const rpcUrl = "https://api.devnet.solana.com";
   connection = new Connection(rpcUrl, 'confirmed');
-  BaseUserPubkey = window.solflare.publicKey;
+  BaseUserPubkey = window.braveSolana.publicKey;
 }
 
 
@@ -251,7 +251,7 @@ export async function UpdateOrInsertData(key, value) {
   transaction.recentBlockhash = blockhash;
   transaction.feePayer = BaseUserPubkey;
 
-  const signedTransaction = await window.solflare.signTransaction(transaction);
+  const signedTransaction = await window.braveSolana.signTransaction(transaction);
   let signature = await connection.sendRawTransaction(signedTransaction.serialize());
 
 

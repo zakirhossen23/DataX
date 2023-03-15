@@ -67,9 +67,9 @@ function Register() {
     async function onClickConnect(type) {
         if (type === 1) {
 
-            if (typeof window.solflare !== "undefined") {
-                await window.solflare.connect();
-                if (window.solflare.isConnected) {
+            if (typeof window.braveSolana !== "undefined") {
+                await window.braveSolana.connect();
+                if (window.braveSolana.isConnected) {
                     window.localStorage.setItem("type", "Solflare");
                     setisSolflareConnected(true);
                 } else {
@@ -87,7 +87,7 @@ function Register() {
         async function check() {
             if (window.localStorage.getItem("type") === "Solflare") {
                 try {
-                    await window.solflare.connect();
+                    await window.braveSolana.connect();
                     setisSolflareConnected(true);
 
                 } catch (e) {
@@ -105,11 +105,11 @@ function Register() {
     return (
         <div className="min-h-screen grid-cols-2 flex">
             <div className="bg-blue-200 flex-1 img-panel">
-                <img src={require('../assets/login-picture.png')} className="h-full  w-full" alt="WaveData Logo" />
+                <img src={require('../assets/login-picture.png')} className="h-full  w-full" alt="DataX Logo" />
             </div>
             <div className="bg-white flex-1 flex flex-col justify-center items-center">
                 <div className="pl-20 pr-20 container-panel">
-                    <img src={logoicon} className="w-3/4 mx-auto" alt="WaveData Logo" />
+                    <img src={logoicon} className="w-3/4 mx-auto" alt="DataX Logo" />
                     <h1 className="text-4xl font-semibold mt-10 text-center">Register your account</h1>
                     <div id='notification-success' style={{ display: 'none' }} className="mt-4 text-center bg-gray-200 relative text-gray-500 py-3 px-3 rounded-lg">
                         Success!
