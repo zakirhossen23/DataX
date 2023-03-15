@@ -1,5 +1,0 @@
-4MB = 40 sol
-
-Total Limit Chars => 1200
-First section =  652
-

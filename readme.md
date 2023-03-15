@@ -1,7 +1,7 @@
 # Instructions
 
 ### To run Website:
-1. Go to wavedata folder
+1. Go to DataX folder
 2. if you haven't installed nodejs. Then you have to first install node js. Link of download  https://nodejs.org/en/download/
 3. Then run 'npm install' in that wavedata folder.
 4. Then run 'npm run build'. 
@@ -22,6 +22,6 @@
 
 ## Test:
 ### Website
-https://wave-data-polkadot.vercel.app
+https://datax-solana.vercel.app
 ### App
-https://wave-data-polkadot-app.vercel.app/
+https://datax-solana-app.vercel.app
