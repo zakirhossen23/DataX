@@ -30,7 +30,7 @@ function Trials() {
 				let trial_element = await ReadContract(api,signerAddress, "_trialMap",[i])
 				let allAudiences = [];
 				try {
-					allAudiences = JSON.parse( await ReadContract(api,signerAddress, "_trialAudienceMap",[i]) );
+					allAudiences = JSON.parse((await ReadContract(api, signerAddress,"_trialAudienceMap", [parseInt(i)])).audienceInfo);
 				} catch (e) {}
 				var newTrial = {
 					id: Number(trial_element.trialId),
