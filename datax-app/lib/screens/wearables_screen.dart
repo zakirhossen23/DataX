@@ -48,12 +48,12 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
       userid = int.parse(prefs.getString("userid").toString());
     });
     await GetTokenAddress();
-    this.allDevices = await GetDevices();
+    //this.allDevices = await GetDevices();
   }
 
   Future<void> GetTokenAddress() async {
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/getUserDetails?userid=${userid}');
+        'https://datax-solana-api.netlify.app/api/GET/getUserDetails?userid=${userid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -66,7 +66,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
 
   Future<void> generateLoginLink() async {
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/getSourceLink?userid=${userid}');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/getSourceLink?userid=${userid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -77,14 +77,14 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
 
   Future<void> GetBloodRate() async {
     chartDataBlood = [];
-        // 'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${(new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 9)).toLocal()}&body_endDay=${(new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 3)).toLocal()}&body_valueTypes=3001');
+        // 'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${(new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 9)).toLocal()}&body_endDay=${(new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 3)).toLocal()}&body_valueTypes=3001');
    
       var startDate = DateFormat('yyyy-MM-dd').format(new DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day - 7));
     var endDate = DateFormat('yyyy-MM-dd').format(new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day + 1));
    
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=3001');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=3001');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     var parsed = json.decode(responseData['value']);
@@ -120,7 +120,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
     // var startDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023, 01, 11));
     // var endDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023,01, 17));
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=2002,2003,2005');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     var parsed = json.decode(responseData['value']);
@@ -162,7 +162,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
     // var startDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023, 01, 11));
     // var endDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023,01,17));
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=1000');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=1000');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     var parsed = json.decode(responseData['value']);
@@ -186,7 +186,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
     // var startDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023, 01,11));
     // var endDate = DateFormat('yyyy-MM-dd').format(new DateTime(2023,01,17));
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=1010');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/dailyDynamicValues&token=${this.AccountTokenAddress}&body_startDay=${startDate}&body_endDay=${endDate}&body_valueTypes=1010');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     var parsed = json.decode(responseData['value']);
@@ -204,7 +204,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
   Future<dynamic> GetDevices() async {
     await GetTokenAddress();
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/userInformation&token=${this.AccountTokenAddress}');
+        'https://datax-solana-api.netlify.app/api/GET/Wearable/customAPI?userid=${userid}&url=https://api.und-gesund.de/v5/userInformation&token=${this.AccountTokenAddress}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
     setState(() {
@@ -320,7 +320,7 @@ class _WearablesScreenState extends ConsumerState<WearablesScreen> {
                   alignment: AlignmentDirectional(0, 0),
                   child: allDevices.length > 0
                       ? Text(
-                          allDevices[0]['deviceName'],
+                          allDevices[0]['configuration']['deviceVersion'],
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         )

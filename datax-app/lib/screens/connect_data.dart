@@ -38,7 +38,7 @@ class ConnectDataApp extends State<ConnectDataScreen> {
     var userid = prefs.getString("userid");
     try {
         var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/POST/UpadateFhir');
+        'https://datax-solana-api.netlify.app/api/POST/UpadateFhir');
     final response = await http.post(url, headers: POSTheader, body: {
       'userid': userid,
       'givenname': GivenNameTXT.text,
@@ -67,7 +67,7 @@ class ConnectDataApp extends State<ConnectDataScreen> {
   Future<void> GetData() async {
     final prefs = await SharedPreferences.getInstance();
     var userid = prefs.getString("userid");
-   var url = Uri.parse('https://datax-solana-api.onrender.com/api/GET/getFhir?userid=${int.parse(userid.toString())}');
+   var url = Uri.parse('https://datax-solana-api.netlify.app/api/GET/getFhir?userid=${int.parse(userid.toString())}');
    
     final response = await http.get(url);
     var responseData = json.decode(response.body);

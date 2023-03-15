@@ -92,7 +92,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   Future<void> GetAvialbleData() async {
     avilableTrials = [];
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Trial/GetAvailableTrial?userid=${userid}');
+        'https://datax-solana-api.netlify.app/api/GET/Trial/GetAvailableTrial?userid=${userid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -120,7 +120,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     };
     dummyActions = [];
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/Trial/GetOngoingTrial?userid=${userid}');
+        'https://datax-solana-api.netlify.app/api/GET/Trial/GetOngoingTrial?userid=${userid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -180,7 +180,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   Future<void> GetFHIRData(int userid) async {
     var url = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/getUserDetails?userid=${userid}');
+        'https://datax-solana-api.netlify.app/api/GET/getUserDetails?userid=${userid}');
     final response = await http.get(url);
     var responseData = json.decode(response.body);
 
@@ -193,7 +193,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     });
 
     var urlFH = Uri.parse(
-        'https://datax-solana-api.onrender.com/api/GET/getFhir?userid=${int.parse(userid.toString())}');
+        'https://datax-solana-api.netlify.app/api/GET/getFhir?userid=${int.parse(userid.toString())}');
     final responseFH = await http.get(urlFH);
     var responseDataFH = json.decode(responseFH.body);
 
@@ -361,7 +361,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       String JsonMadePermission = given_permission.toString();
 
       var url = Uri.parse(
-          'https://datax-solana-api.onrender.com/api/POST/Trial/CreateOngoingTrail');
+          'https://datax-solana-api.netlify.app/api/POST/Trial/CreateOngoingTrail');
       await http.post(url, headers: POSTheader, body: {
         'trialid': trialid.toString(),
         'userid': userid.toString(),
@@ -384,7 +384,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       final prefs = await SharedPreferences.getInstance();
       int userid = int.parse(prefs.getString("userid").toString());
       var url = Uri.parse(
-          'https://datax-solana-api.onrender.com/api/POST/UpadateImage');
+          'https://datax-solana-api.netlify.app/api/POST/UpadateImage');
       await http.post(url, headers: POSTheader, body: {
         'userid': userid.toString(),
         'image': _textFieldController.text
@@ -432,7 +432,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 40, left: 16, right: 16),
+                    margin: EdgeInsets.only(top: 70, left: 16, right: 16),
                     child: Material(
                       elevation: 5,
                       borderRadius: const BorderRadius.only(
@@ -1413,7 +1413,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.only(
-                                      top: 32, left: 32, right: 32),
+                                      top: 70, left: 32, right: 32),
                                   child: Material(
                                     elevation: 5,
                                     borderRadius: BorderRadius.circular(8),
@@ -1441,7 +1441,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                                           FontWeight.w700)),
                                               Text(
                                                   userDetails['credits']
-                                                      .toString(),
+                                                      .toString() + " SOL",
                                                   style: GoogleFonts.getFont(
                                                       'Lexend Deca',
                                                       color: Color(0xFFF06129),
@@ -1568,7 +1568,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                                                   ? userDetails[
                                                                       'ongoingcredit']
                                                                   : 0)
-                                                              .toString(),
+                                                              .toString() +  " SOL",
                                                           style: GoogleFonts
                                                               .getFont(
                                                                   'Lexend Deca',
