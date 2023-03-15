@@ -16,7 +16,7 @@
 ### To run Website Api:
 1. Go to datax-api folder
 2. if you haven't installed nodejs. Then you have to first install node js. Link of download  https://nodejs.org/en/download/
-3. Then run 'npm install' in that wavedata-api folder.
+3. Then run 'npm install' in that datax-api folder.
 4. Then run 'npm run build'. 
 5. Next you have to 'npm run dev' to run locally. Then, you can test the website at http://localhost:3000/
 
