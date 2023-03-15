@@ -107,6 +107,8 @@ class AuthScreenApp extends State<AuthScreen> {
                   child: Column(
                     children: [
                       Container(
+                          height: 200,
+                          width: 400,
                         margin: EdgeInsets.only(top: 60, bottom: 30),
                         child: SvgPicture.asset(
                           "assets/images/Logo.svg",
